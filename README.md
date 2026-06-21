@@ -6,8 +6,7 @@
 
 This contains everything you need to run your app locally.
 
-View your app in AI Studio: https://ai.studio/apps/18f00a7e-35ca-419e-bb67-5712898b0bc8
-
+test: https://suarahukum.vercel.app
 ## Run Locally
 
 **Prerequisites:**  Node.js
