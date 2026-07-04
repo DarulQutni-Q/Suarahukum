@@ -1,8 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI, Type } from '@google/genai';
 
-const ANALYSIS_PROMPT_BASIC = `Kamu adalah asisten hukum Indonesia senior. Analisis dokumen dalam gambar ini secara menyeluruh namun ringkas (summary-level). Jika gambar bukan merupakan dokumen hukum, kontrak, atau surat resmi terkait, set overallSafety ke "perlu_perhatian", dan kosongkan field lainnya. Jika dokumen tidak dapat dibaca, isi semua field dengan nilai kosong yang sesuai dan set overallSafety ke perlu_perhatian.`;
-
 const ANALYSIS_PROMPT_DEEP = `Kamu adalah asisten hukum Indonesia senior. Analisis dokumen dalam gambar-gambar ini secara sangat mendalam, pasal-demi-pasal. Jika gambar bukan merupakan dokumen hukum, kontrak, atau surat resmi terkait, set overallSafety ke "perlu_perhatian", dan kosongkan field lainnya. Jika dokumen tidak dapat dibaca, isi semua field dengan nilai kosong yang sesuai dan set overallSafety ke perlu_perhatian.`;
 
 const responseSchema = {
