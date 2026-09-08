@@ -93,8 +93,8 @@ export default function AnalyzingScreen({ state }: Props) {
         </AnimatePresence>
       </div>
 
-      <p className="text-xs text-white/40 text-center mt-12 max-w-xs">
-        Dokumen Anda tidak dikirim atau disimpan di server manapun
+      <p className="text-xs text-white/50 text-center mt-12 max-w-xs leading-relaxed">
+        Dokumen Anda diproses secara aman untuk analisis AI hukum dan tidak disimpan ke basis data publik.
       </p>
     </div>
   );

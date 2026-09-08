@@ -8,6 +8,16 @@ export const PLAN_LIMITS = {
   pro: { max: 35, resetHours: 12, label: 'Pro' }
 };
 
+export function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const adminEnv = (import.meta as any).env?.VITE_ADMIN_EMAILS || '';
+  const adminList = adminEnv
+    .split(',')
+    .map((e: string) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return adminList.includes(email.trim().toLowerCase());
+}
+
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const ref = doc(db, 'users', uid);
   const snap = await getDoc(ref);
@@ -15,7 +25,7 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   return snap.data() as UserProfile;
 }
 
-export async function getOrInitUserProfile(uid: string, initialData?: Partial<UserProfile>): Promise<UserProfile> {
+export async function getOrInitUserProfile(uid: string, initialData?: Partial<UserProfile>, email?: string | null): Promise<UserProfile> {
   let profile = await getUserProfile(uid);
   let changed = false;
 
@@ -64,6 +74,13 @@ export async function getOrInitUserProfile(uid: string, initialData?: Partial<Us
       profile.plan = 'free';
       changed = true;
     }
+  }
+
+  // Auto-upgrade configured admin emails to Pro
+  if (email && isAdminEmail(email) && profile.plan !== 'pro') {
+    profile.plan = 'pro';
+    profile.subscriptionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365 * 10).toISOString();
+    changed = true;
   }
 
   if (changed) {

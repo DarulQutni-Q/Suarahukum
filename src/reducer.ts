@@ -1,4 +1,5 @@
 import { Screen, AppState, AppAction } from './types';
+import { getHistory } from './utils/storage';
 
 export const initialState: AppState = {
   screen: 'home',
@@ -13,13 +14,10 @@ export const initialState: AppState = {
 };
 
 export function initApp(initial: AppState): AppState {
-  try {
-    const stored = localStorage.getItem('suarahukum_v1');
-    const history = stored ? JSON.parse(stored) : [];
-    return { ...initial, history };
-  } catch (e) {
-    return initial;
-  }
+  return {
+    ...initial,
+    history: getHistory()
+  };
 }
 
 export function appReducer(state: AppState, action: AppAction): AppState {
@@ -45,26 +43,12 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           followUpQA: [...(state.result.followUpQA || []), action.qa]
         }
       };
-    case 'SAVE_TO_HISTORY': {
-      const newHistory = [action.entry, ...state.history];
-      try {
-        localStorage.setItem('suarahukum_v1', JSON.stringify(newHistory));
-      } catch(e) {}
-      return { ...state, history: newHistory };
-    }
-    case 'DELETE_HISTORY': {
-      const newHistory = state.history.filter(h => h.id !== action.id);
-      try {
-        localStorage.setItem('suarahukum_v1', JSON.stringify(newHistory));
-      } catch(e) {}
-      return { ...state, history: newHistory };
-    }
-    case 'CLEAR_HISTORY': {
-      try {
-        localStorage.setItem('suarahukum_v1', JSON.stringify([]));
-      } catch(e) {}
+    case 'SAVE_TO_HISTORY':
+      return { ...state, history: [action.entry, ...state.history] };
+    case 'DELETE_HISTORY':
+      return { ...state, history: state.history.filter(h => h.id !== action.id) };
+    case 'CLEAR_HISTORY':
       return { ...state, history: [] };
-    }
     case 'SET_PROFILE':
       return { ...state, profile: action.profile };
     case 'SET_ONBOARDING_REDIRECT':

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, FileText, CheckCircle2, AlertTriangle, ShieldCheck, Upload, MousePointer2, ChevronLeft, ChevronRight, Scale } from 'lucide-react';
-import { Card } from '../../components/ui/card';
-import { Badge } from '../../components/ui/badge';
-import { Separator } from '../../components/ui/separator';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 const steps = [
   {
@@ -55,7 +55,7 @@ export default function InteractiveDemo() {
       opacity: 1,
       scale: 1,
       boxShadow: "0px 2px 10px rgba(0,0,0,0.05)",
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } // Decelerating curve
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } // Decelerating curve
     },
     exit: (dir: number) => ({
       rotateY: dir > 0 ? -100 : 100, // Page flips over
@@ -63,7 +63,7 @@ export default function InteractiveDemo() {
       opacity: 0,
       scale: 0.98,
       boxShadow: "0px 10px 40px rgba(0,0,0,0.25)",
-      transition: { duration: 0.4, ease: "easeInOut" }
+      transition: { duration: 0.4, ease: "easeInOut" as const }
     })
   };
   const containerRef = useRef<HTMLDivElement>(null);

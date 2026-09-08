@@ -68,7 +68,7 @@ export default function HistoryScreen({ state, dispatch, backgroundScreen }: Pro
                       className="group bg-white border border-[var(--cream-dark)] rounded-2xl flex flex-col p-4 active:scale-[0.98] transition-all cursor-pointer shadow-sm hover:border-[var(--navy-light)] relative"
                       onClick={() => {
                         dispatch({ type: 'SET_RESULT', result: entry.result });
-                        dispatch({ type: 'SET_IMAGE', file: new File([], 'history.jpg'), preview: entry.thumbnail });
+                        dispatch({ type: 'SET_IMAGES', files: [new File([], 'history.jpg')], previews: [entry.thumbnail] });
                         dispatch({ type: 'SET_SCREEN', screen: 'result' });
                       }}
                     >

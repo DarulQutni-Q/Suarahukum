@@ -47,6 +47,21 @@ export default function OnboardingScreen({ state, dispatch }: Props) {
           updatedAt: new Date().toISOString()
         }, { merge: true });
 
+        // Update AppState profile
+        const updatedProfile = {
+          ...(state.profile || {
+            plan: 'free' as const,
+            quotaUsed: 0,
+            quotaResetAt: null,
+            subscriptionExpiry: null
+          }),
+          fullName,
+          caseCategory: category,
+          onboardingComplete: true,
+          updatedAt: new Date().toISOString()
+        };
+        dispatch({ type: 'SET_PROFILE', profile: updatedProfile });
+
         // Redirect based on intent
         if (state.onboardingRedirect === 'scanner') {
           dispatch({ type: 'SET_SCREEN', screen: 'scanner' });

@@ -5,6 +5,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { AppState, AppAction, PlanType } from '../types';
 import { prepareImage, analyzeDocument } from '../utils/gemini';
 import { PLAN_LIMITS, incrementQuota } from '../utils/user';
+import { createThumbnail } from '../utils/storage';
 import { auth } from '../firebase';
 
 interface Props {
@@ -214,13 +215,16 @@ export default function ScannerScreen({ state, dispatch }: Props) {
       
       dispatch({ type: 'SET_RESULT', result });
       
+      const rawThumbnail = (state.imagePreviews && state.imagePreviews.length > 0) ? state.imagePreviews[0] : '';
+      const compressedThumbnail = await createThumbnail(rawThumbnail);
+
       const entry = {
         id: crypto.randomUUID(),
         documentType: result.documentType,
         summary: result.summary,
         overallSafety: result.overallSafety,
         analyzedAt: new Date().toISOString(),
-        thumbnail: (state.imagePreviews && state.imagePreviews.length > 0) ? state.imagePreviews[0] : '',
+        thumbnail: compressedThumbnail,
         result: result
       };
       dispatch({ type: 'SAVE_TO_HISTORY', entry });
